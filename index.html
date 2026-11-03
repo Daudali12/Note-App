@@ -5,24 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#437993">
     <title>Notes App</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
+
 <body class="min-h-screen bg-white text-slate-800">
-    <header class="bg-[#437993] px-[11px] py-[11px] pl-[150px] text-white max-[640px]:pl-4">
-        <h1 class="text-[36px] leading-[1.5] font-bold">Notes App</h1>
-        <p class="font-light">Take notes and never forget</p>
+    <header
+        class="bg-[#437993] px-[11px] py-[11px] pl-[150px] text-white max-[640px]:pl-4"
+    >
+        <h1 class="text-[36px] leading-[1.5] font-bold">
+            Notes App
+        </h1>
+
+        <p class="font-light">
+            Take notes and never forget
+        </p>
     </header>
-      <div id="home-view">
-        <nav aria-label="Note controls" class="bg-[#f7f7f7] px-5 py-4 text-base leading-6">
+    <div id="home-view">
+        <nav
+            aria-label="Note controls"
+            class="bg-[#f7f7f7] px-5 py-4 text-base leading-6">
             <div class="mx-auto flex flex-wrap justify-center gap-3 sm:gap-[40px]">
-                <label class="sr-only" for="inputSearch">Filter notes</label>
+                <label class="sr-only" for="inputSearch">
+                    Filter notes
+                </label>
                 <input id="inputSearch" type="text" placeholder="Filter by"
-                    class="w-[250px] rounded border border-slate-200 bg-white p-2 text-base leading-6 outline-none focus:border-[#437993]"
-                >
+                    class="w-[250px] rounded border border-slate-200 bg-white p-2 text-base leading-6 outline-none focus:border-[#437993]">
                 <label class="sr-only" for="sorting">Sort notes</label>
-                <select id="sorting"
-                    class="w-[195px] cursor-pointer rounded border border-slate-200 bg-white p-2 text-base outline-none focus:border-[#437993]"
-                >
+                <select
+                    id="sorting"
+                    class="w-[195px] cursor-pointer rounded border border-slate-200 bg-white p-2 text-base outline-none focus:border-[#437993]">
                     <option value="default">Sort By</option>
                     <option value="alphabets">Alphabets</option>
                     <option value="edited">Last Edited</option>
@@ -30,53 +44,45 @@
                 </select>
             </div>
         </nav>
-          <main class="mx-auto mt-4 max-w-[700px] px-4 pb-28 sm:px-0">
+        <main class="mx-auto mt-4 max-w-[700px] px-4 pb-28 sm:px-0">
             <p id="home-message" class="hidden text-sm text-red-700" role="alert"></p>
-            <section id="container" class="mt-8 flex flex-col gap-4" aria-label="Your notes"></section>
+            <section id="container"class="mt-8 flex flex-col gap-4"aria-label="Your notes"></section> 
             <p id="empty-message" class="hidden py-12 text-center text-slate-500"></p>
         </main>
-       <a href="#new"
-            class="fixed bottom-6 right-6 rounded-lg bg-[#437993] px-5 py-4 font-medium text-white shadow-lg transition hover:bg-[#35647b] focus:outline-none focus:ring-2 focus:ring-[#437993] focus:ring-offset-2"
-        >
+        <a href="#new" class="fixed bottom-6 right-6 rounded-lg bg-[#437993] px-5 py-4 font-medium text-white shadow-lg transition hover:bg-[#35647b] focus:outline-none focus:ring-2 focus:ring-[#437993] focus:ring-offset-2">
             Create New Note
         </a>
     </div>
-   <div id="editor-view" class="hidden">
+    <div id="editor-view" class="hidden">
         <nav class="bg-[#f7f7f7] px-0 py-4 text-lg leading-[27px]">
             <div class="mx-auto max-w-[700px]">
-                <a href="#home" class="inline-block text-slate-800 hover:text-[#437993]">Home</a>
+             <a href="#home" class="inline-block text-slate-800 hover:text-[#437993]">Home</a>
             </div>
         </nav>
-       <main class="mx-auto mt-4 w-full max-w-[700px] px-4 py-0 min-[732px]:px-0">
+        <main class="mx-auto mt-4 w-full max-w-[700px] px-4 py-0 min-[732px]:px-0">
             <form id="note-form" class="flex flex-col gap-4">
                 <label class="sr-only" for="note-title">Note title</label>
-                <input
-                    id="note-title" type="text"maxlength="120" placeholder="Type Your Notes Title" class="w-full
-                     bg-[#f7f7f7] p-3 text-xl leading-[30px] outline-none focus:ring-2 focus:ring-[#437993]"required>
+                 <input id="note-title" type="text" maxlength="120" placeholder="Type Your Notes Title"
+                    class="w-full bg-[#f7f7f7] p-3 text-xl leading-[30px] outline-none focus:ring-2 focus:ring-[#437993]">
                 <label class="sr-only" for="note-content">Note body</label>
-                <textarea
-                    id="note-content" rows="2" placeholder="Type Your Notes Body"
+                <textarea id="note-content" rows="2" placeholder="Type Your Notes Body"
                     class="w-full resize-y bg-[#f7f7f7] p-3 text-xl leading-[30px] outline-none focus:ring-2 focus:ring-[#437993]"
-                    required
                 ></textarea>
                 <p id="editor-message" class="hidden text-sm text-red-700" role="alert"></p>
                 <div class="mt-3 flex items-center justify-between">
-                    <button
-                        id="save-note"type="submit"
-                        class="w-fit rounded-lg bg-[#437993] p-3 text-base text-white hover:bg-[#35647b] focus:outline-none focus:ring-2 focus:ring-[#437993] focus:ring-offset-2"
-                    >
+                <button id="save-note" type="submit"
+                        class="w-fit rounded-lg bg-[#437993] p-3 text-base text-white hover:bg-[#35647b] focus:outline-none focus:ring-2 focus:ring-[#437993] focus:ring-offset-2">
                         Add Notes
                     </button>
-                    <button id="delete-note" type="button"class="hidden w-fit rounded-lg bg-[#437993] p-3 text-base text-white
-                     hover:bg-[#35647b] focus:outline-none focus:ring-2 focus:ring-[#437993] focus:ring-offset-2"
-                    >
+                 <button id="delete-note" type="button"
+                        class="hidden w-fit rounded-lg bg-[#437993] p-3 text-base text-white hover:bg-[#35647b] focus:outline-none focus:ring-2 focus:ring-[#437993] focus:ring-offset-2">
                         Delete
                     </button>
                 </div>
             </form>
         </main>
     </div>
-
     <script src="script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>
