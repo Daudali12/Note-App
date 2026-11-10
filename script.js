@@ -20,6 +20,14 @@ function showMessage(element, message) {
     element.classList.toggle("hidden", !message);
 }
 
+function normalizeNoteBody(body) {
+    return body
+        .replace(/\r\n?/g, "\n")
+        .replace(/[ \t]*\n[ \t]*/g, "\n")
+        .replace(/\n+/g, "\n")
+        .trim();
+}
+
 function loadNotes() {
     try {
         const savedNotes = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -133,7 +141,7 @@ function renderNotes() {
 
     visibleNotes.forEach((note) => {
         const card = document.createElement("article");
-        card.className = "bg-[#f7f7f7]";
+        card.className = "h-fit w-full bg-[#f7f7f7]";
 
         const editLink = document.createElement("a");
 
@@ -154,7 +162,7 @@ function renderNotes() {
         body.className =
             "whitespace-pre-wrap break-words text-base leading-6";
 
-        body.textContent = note.body;
+        body.textContent = normalizeNoteBody(note.body);
 
         const date = document.createElement("p");
 
@@ -176,7 +184,7 @@ function openEditor(note) {
     editingNoteId = note ? note.id : null;
 
     titleInput.value = note ? note.title : "";
-    contentInput.value = note ? note.body : "";
+    contentInput.value = note ? normalizeNoteBody(note.body) : "";
 
     saveButton.textContent = note ? "Update" : "Add Notes";
 
@@ -251,13 +259,31 @@ searchInput.addEventListener("input", renderNotes);
 sortingSelect.addEventListener("change", renderNotes);
 window.addEventListener("hashchange", renderRoute);
 
+contentInput.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const { selectionEnd, selectionStart, value } = contentInput;
+    const before = value.slice(0, selectionStart).replace(/[ \t]+$/, "");
+    const after = value.slice(selectionEnd).replace(/^[ \t]+/, "");
+    const prefix = before.endsWith("\n") ? before : `${before}\n`;
+    const nextValue = `${prefix}${after}`
+        .replace(/[ \t]*\n[ \t]*/g, "\n")
+        .replace(/\n+/g, "\n");
+
+    event.preventDefault();
+    contentInput.value = nextValue;
+    contentInput.setSelectionRange(prefix.length, prefix.length);
+});
+
 noteForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const title = titleInput.value.trim();
-    const body = contentInput.value;
+    const body = normalizeNoteBody(contentInput.value);
 
-    if (!title || !body || !title.trim() || !body.trim()) {
+    if (!title || !body) {
         Toastify({
             text: "title and body can't be empty",
             className: "error",
